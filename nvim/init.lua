@@ -279,7 +279,6 @@ require('lazy').setup({
       },
     },
   },
-
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -291,7 +290,7 @@ require('lazy').setup({
   {
     'akinsho/toggleterm.nvim',
     version = "*",
-    lazy = true,
+    lazy = false,
     config = true
   }
 
@@ -431,8 +430,7 @@ end
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -456,14 +454,15 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+vim.keymap.set('n', '<leader>sr', require('telescope.builtin').registers, { desc = '[S]earch [R]egisters' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
 
 vim.api.nvim_set_keymap('', ',', "<cmd>lua require'hop'.hint_char1()<cr>", {})
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
-vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>Toggleterm<CR>', { desc = "Toggle terminal" })
+vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20<CR>', { desc = 'Terminal' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -551,7 +550,7 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+  nmap('<leader>cn', vim.lsp.buf.rename, '[C]ode [R]ename')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
@@ -588,7 +587,7 @@ require('which-key').register {
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+  ['<leader>r'] = { name = '[R]egisters', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
@@ -743,8 +742,7 @@ vim.keymap.set({ 'n', 'v' }, '<C-l>', '<C-w>l', { silent = true })
 --   ["<C-l>"] = "<C-\\><C-N><C-w>l",
 -- },
 
--- neoclip
--- neotree
+-- marks
 -- conform
 -- overseer
 -- Eandrju/cellular-automaton.nvim
