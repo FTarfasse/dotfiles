@@ -113,6 +113,11 @@ require('lazy').setup({
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',  opts = {} },
+  {
+    'chentoast/marks.nvim', 
+    opts = {},
+    lazy = false
+  },
   { 'windwp/nvim-autopairs', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -226,6 +231,7 @@ require('lazy').setup({
   },
   {
     'simrat39/symbols-outline.nvim',
+    event = "VeryLazy",
     lazy = true,
   },
   {
@@ -430,7 +436,8 @@ end
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles,
+  { desc = '[S]earc Find recently [O]pened files' })
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -455,7 +462,8 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').registers, { desc = '[S]earch [R]egisters' })
-vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles,
+  { desc = '[S]earc Find recently [O]pened files' })
 
 vim.api.nvim_set_keymap('', ',', "<cmd>lua require'hop'.hint_char1()<cr>", {})
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
@@ -587,6 +595,7 @@ require('which-key').register {
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
   ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+  ['<leader>m'] = { name = '[M]arks', _ = 'which_key_ignore' },
   ['<leader>r'] = { name = '[R]egisters', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
@@ -615,7 +624,9 @@ require('symbols-outline').setup()
 local servers = {
   -- clangd = {},
   gopls = {},
-  ocamllsp = {},
+  ocamllsp = {
+
+  },
   -- pyright = {},
   rust_analyzer = {
     -- ["rust-analyzer"] = {
@@ -638,7 +649,7 @@ local servers = {
     --     },
     -- },
   },
-  -- tsserver = {},
+  tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
   lua_ls = {
@@ -732,17 +743,8 @@ vim.keymap.set({ 'n', 'v' }, '<C-h>', '<C-w>h', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-j>', '<C-w>j', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-w>k', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-l>', '<C-w>l', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>dam', ':delmarks!<CR>', { silent = true })
 
--- Terminal navigation
--- term_mode = {
---   -- Terminal window navigation
---   ["<C-h>"] = "<C-\\><C-N><C-w>h",
---   ["<C-j>"] = "<C-\\><C-N><C-w>j",
---   ["<C-k>"] = "<C-\\><C-N><C-w>k",
---   ["<C-l>"] = "<C-\\><C-N><C-w>l",
--- },
-
--- marks
 -- conform
 -- overseer
 -- Eandrju/cellular-automaton.nvim
