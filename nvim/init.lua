@@ -208,6 +208,7 @@ require('lazy').setup({
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
+    lazy = true,
     config = function()
       require("nvim-surround").setup({
         -- Configuration here, or leave empty to use defaults
@@ -217,12 +218,16 @@ require('lazy').setup({
   {
     'smoka7/hop.nvim',
     tag = '*', -- optional but strongly recommended
+    lazy = true,
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require 'hop'.setup { keys = 'qsdfghjklm' }
     end
   },
-  { 'simrat39/symbols-outline.nvim' },
+  {
+    'simrat39/symbols-outline.nvim',
+    lazy = true,
+  },
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -247,12 +252,17 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',        opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    lazy = false,
+    opts = {}
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
+    lazy = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -278,7 +288,12 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-  { 'akinsho/toggleterm.nvim', version = "*", config = true }
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    lazy = true,
+    config = true
+  }
 
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -445,9 +460,10 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 
 vim.api.nvim_set_keymap('', ',', "<cmd>lua require'hop'.hint_char1()<cr>", {})
 vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>bl',require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
+vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
+vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>Toggleterm<CR>', { desc = "Toggle terminal" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -727,7 +743,6 @@ vim.keymap.set({ 'n', 'v' }, '<C-l>', '<C-w>l', { silent = true })
 --   ["<C-l>"] = "<C-\\><C-N><C-w>l",
 -- },
 
--- toggleterm
 -- neoclip
 -- neotree
 -- conform
