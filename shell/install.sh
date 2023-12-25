@@ -1,0 +1,11 @@
+zoxyde
+fzf
+fish
+omf
+batcat
+fd
+lazygit
+neovim
+nix
+i3
+kitty
