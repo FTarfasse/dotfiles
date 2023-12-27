@@ -470,7 +470,9 @@ vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
-vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20<CR>', { desc = 'Terminal' })
+vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>', { desc = 'Terminal' })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
+vim.keymap.set({ 'n', 'v' }, 'Q', ':bd<CR>', { desc = 'Close buffer' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -558,7 +560,7 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
-  nmap('<leader>cn', vim.lsp.buf.rename, '[C]ode [R]ename')
+  nmap('<leader>cr', vim.lsp.buf.rename, '[C]ode [R]ename')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
@@ -745,13 +747,14 @@ vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-w>k', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-l>', '<C-w>l', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>dam', ':delmarks!<CR>', { silent = true })
 
--- conform
--- overseer
--- Eandrju/cellular-automaton.nvim
 -- harpoon
+-- neotest
+-- Eandrju/cellular-automaton.nvim
+-- overseer
 -- refactoring
 -- dap
 -- spectre ?
+-- conform
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
