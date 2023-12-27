@@ -114,7 +114,7 @@ require('lazy').setup({
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',  opts = {} },
   {
-    'chentoast/marks.nvim', 
+    'chentoast/marks.nvim',
     opts = {},
     lazy = false
   },
@@ -446,6 +446,31 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
+local Terminal = require('toggleterm.terminal').Terminal
+local lazygit  = Terminal:new({
+  cmd = "lazygit", hidden = true ,
+  dir = "git_dir",
+  direction = "float",
+  float_opts = {
+    border = "double",
+  },
+  -- function to run on opening the terminal
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+  end,
+  -- function to run on closing the terminal
+  on_close = function(term)
+    vim.cmd("startinsert!")
+  end,
+})
+
+local function _lazygit_toggle()
+  lazygit:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+
 local function telescope_live_grep_open_files()
   require('telescope.builtin').live_grep {
     grep_open_files = true,
@@ -455,6 +480,7 @@ end
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+vim.keymap.set('n', '<leader>gs', _lazygit_toggle, { desc = 'Search [G]it [U]i' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
@@ -470,7 +496,8 @@ vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
-vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>', { desc = 'Terminal' })
+vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>',
+  { desc = 'Terminal' })
 vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
 vim.keymap.set({ 'n', 'v' }, 'Q', ':bd<CR>', { desc = 'Close buffer' })
 
