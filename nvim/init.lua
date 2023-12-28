@@ -41,6 +41,13 @@ P.S. You can delete this when you're done too. It's your config now :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -95,6 +102,24 @@ require('lazy').setup({
     },
   },
   {
+    'stevearc/conform.nvim',
+    opts = {},
+    lazy = true,
+    config = function()
+      require('conform').setup {
+        -- Configuration here, or leave empty to use defaults
+        formatters_by_ft = {
+          lua = { 'stylua' },
+          ocaml = { 'ocamlformat' },
+          -- Conform will run multiple formatters sequentially
+          -- python = { "isort", "black" },
+          -- Use a sub-list to run only the first available formatter
+          -- javascript = { { "prettierd", "prettier" } },
+        },
+      }
+    end,
+  },
+  {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
@@ -110,13 +135,18 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+  },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim', opts = {} },
   {
     'chentoast/marks.nvim',
     opts = {},
-    lazy = false
+    lazy = false,
   },
   { 'windwp/nvim-autopairs', opts = {} },
   {
@@ -210,15 +240,15 @@ require('lazy').setup({
     end,
   },
   {
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
-    event = "VeryLazy",
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
     lazy = true,
     config = function()
-      require("nvim-surround").setup({
+      require('nvim-surround').setup {
         -- Configuration here, or leave empty to use defaults
-      })
-    end
+      }
+    end,
   },
   {
     'smoka7/hop.nvim',
@@ -226,12 +256,12 @@ require('lazy').setup({
     lazy = true,
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
-      require 'hop'.setup { keys = 'qsdfghjklm' }
-    end
+      require('hop').setup { keys = 'qsdfghjklm' }
+    end,
   },
   {
     'simrat39/symbols-outline.nvim',
-    event = "VeryLazy",
+    event = 'VeryLazy',
     lazy = true,
   },
   {
@@ -261,7 +291,7 @@ require('lazy').setup({
   {
     'numToStr/Comment.nvim',
     lazy = false,
-    opts = {}
+    opts = {},
   },
 
   -- Fuzzy Finder (files, lsp, etc)
@@ -295,11 +325,10 @@ require('lazy').setup({
   },
   {
     'akinsho/toggleterm.nvim',
-    version = "*",
+    version = '*',
     lazy = false,
-    config = true
-  }
-
+    config = true,
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -436,8 +465,7 @@ end
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles,
-  { desc = '[S]earc Find recently [O]pened files' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -447,29 +475,28 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 local Terminal = require('toggleterm.terminal').Terminal
-local lazygit  = Terminal:new({
-  cmd = "lazygit", hidden = true ,
-  dir = "git_dir",
-  direction = "float",
+local lazygit = Terminal:new {
+  cmd = 'lazygit',
+  hidden = true,
+  dir = 'git_dir',
+  direction = 'float',
   float_opts = {
-    border = "double",
+    border = 'double',
   },
   -- function to run on opening the terminal
   on_open = function(term)
-    vim.cmd("startinsert!")
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap = true, silent = true})
+    vim.cmd 'startinsert!'
+    vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
   end,
   -- function to run on closing the terminal
   on_close = function(term)
-    vim.cmd("startinsert!")
+    vim.cmd 'startinsert!'
   end,
-})
+}
 
 local function _lazygit_toggle()
   lazygit:toggle()
 end
-
-vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
 
 local function telescope_live_grep_open_files()
   require('telescope.builtin').live_grep {
@@ -488,18 +515,23 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').registers, { desc = '[S]earch [R]egisters' })
-vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles,
-  { desc = '[S]earc Find recently [O]pened files' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
 
 vim.api.nvim_set_keymap('', ',', "<cmd>lua require'hop'.hint_char1()<cr>", {})
-vim.keymap.set("i", "jk", "<Esc>", { noremap = true })
+vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
-vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>',
-  { desc = 'Terminal' })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
+vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>', { desc = 'Terminal' })
+-- vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', ':NvimTreeToggle<CR>', { desc = 'Explorer' })
 vim.keymap.set({ 'n', 'v' }, 'Q', ':bd<CR>', { desc = 'Close buffer' })
+vim.keymap.set(
+  { 'n', 'v' },
+  '<leader>tt',
+  "<CMD>TermExec direction=horizontal size=20 dir=getcwd() cmd='dune runtest ; sleep 1.5 && exit'<CR>",
+  { desc = 'Terminal' }
+)
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -572,7 +604,7 @@ end, 0)
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -653,30 +685,28 @@ require('symbols-outline').setup()
 local servers = {
   -- clangd = {},
   gopls = {},
-  ocamllsp = {
-
-  },
+  ocamllsp = {},
   -- pyright = {},
   rust_analyzer = {
-    -- ["rust-analyzer"] = {
-    --     checkOnSave = {
-    --         command = "clippy",
-    --     },
-    --     imports = {
-    --         granularity = {
-    --             group = "module",
-    --         },
-    --         prefix = "self",
-    --     },
-    --     cargo = {
-    --         buildScripts = {
-    --             enable = true,
-    --         },
-    --     },
-    --     procMacro = {
-    --         enable = true
-    --     },
-    -- },
+    ['rust-analyzer'] = {
+      checkOnSave = {
+        command = 'clippy',
+      },
+      imports = {
+        granularity = {
+          group = 'module',
+        },
+        prefix = 'self',
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true,
+      },
+    },
   },
   tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -722,6 +752,8 @@ local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
+-- empty setup using defaults
+require('nvim-tree').setup()
 
 cmp.setup {
   snippet = {
@@ -774,6 +806,14 @@ vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-w>k', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<C-l>', '<C-w>l', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>dam', ':delmarks!<CR>', { silent = true })
 
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*',
+  callback = function(args)
+    require('conform').format { bufnr = args.buf }
+  end,
+})
+
+-- vinegar
 -- harpoon
 -- neotest
 -- Eandrju/cellular-automaton.nvim
@@ -781,7 +821,6 @@ vim.keymap.set({ 'n', 'v' }, '<leader>dam', ':delmarks!<CR>', { silent = true })
 -- refactoring
 -- dap
 -- spectre ?
--- conform
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
