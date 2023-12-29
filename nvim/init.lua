@@ -102,6 +102,13 @@ require('lazy').setup({
     },
   },
   {
+    'xiyaowong/transparent.nvim',
+    lazy = false,
+    config = function()
+      require('transparent').setup()
+    end,
+  },
+  {
     'stevearc/conform.nvim',
     opts = {},
     lazy = true,
@@ -140,15 +147,24 @@ require('lazy').setup({
     dependencies = {
       'nvim-tree/nvim-web-devicons',
     },
+    lazy = true,
   },
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  {
+    'folke/which-key.nvim',
+    opts = {},
+    lazy = true,
+  },
   {
     'chentoast/marks.nvim',
     opts = {},
+    lazy = true,
+  },
+  {
+    'windwp/nvim-autopairs',
+    opts = {},
     lazy = false,
   },
-  { 'windwp/nvim-autopairs', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -245,9 +261,7 @@ require('lazy').setup({
     event = 'VeryLazy',
     lazy = true,
     config = function()
-      require('nvim-surround').setup {
-        -- Configuration here, or leave empty to use defaults
-      }
+      require('nvim-surround').setup {}
     end,
   },
   {
@@ -261,7 +275,6 @@ require('lazy').setup({
   },
   {
     'simrat39/symbols-outline.nvim',
-    event = 'VeryLazy',
     lazy = true,
   },
   {
@@ -278,19 +291,10 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help ibl`
-    main = 'ibl',
-    opts = {},
-  },
-
   -- "gc" to comment visual regions/lines
   {
     'numToStr/Comment.nvim',
-    lazy = false,
+    lazy = true,
     opts = {},
   },
 
@@ -318,6 +322,7 @@ require('lazy').setup({
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = true,
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
@@ -326,7 +331,7 @@ require('lazy').setup({
   {
     'akinsho/toggleterm.nvim',
     version = '*',
-    lazy = false,
+    lazy = true,
     config = true,
   },
 
@@ -752,7 +757,7 @@ local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
--- empty setup using defaults
+
 require('nvim-tree').setup()
 
 cmp.setup {
