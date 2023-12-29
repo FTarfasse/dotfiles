@@ -161,6 +161,13 @@ require('lazy').setup({
     lazy = true,
   },
   {
+    {
+      'nvim-telescope/telescope-file-browser.nvim',
+      dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+      lazy = true,
+    },
+  },
+  {
     'windwp/nvim-autopairs',
     opts = {},
     lazy = false,
@@ -482,7 +489,9 @@ end
 vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earc Find recently [O]pened files' })
+vim.keymap.set('n', '<leader>so', require('telescope.builtin').oldfiles, { desc = '[S]earch recently [O]pened files' })
+vim.keymap.set('n', '<leader>st', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', { desc = '[S]earch [T]ree files' })
+
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
