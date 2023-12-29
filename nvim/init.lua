@@ -42,8 +42,8 @@ P.S. You can delete this when you're done too. It's your config now :)
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 -- disable netrw at the very start of your init.lua
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- set termguicolors to enable highlight groups
 vim.opt.termguicolors = true
@@ -142,13 +142,13 @@ require('lazy').setup({
       'rafamadriz/friendly-snippets',
     },
   },
-  {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons',
-    },
-    lazy = true,
-  },
+  -- {
+  --   'nvim-tree/nvim-tree.lua',
+  --   dependencies = {
+  --     'nvim-tree/nvim-web-devicons',
+  --   },
+  --   lazy = true,
+  -- },
   -- Useful plugin to show you pending keybinds.
   {
     'folke/which-key.nvim',
@@ -164,6 +164,18 @@ require('lazy').setup({
     'windwp/nvim-autopairs',
     opts = {},
     lazy = false,
+  },
+  {
+    'elihunter173/dirbuf.nvim',
+    lazy = false,
+    config = function()
+      require('dirbuf').setup {
+        hash_padding = 2,
+        show_hidden = true,
+        sort_order = 'default',
+        write_cmd = 'DirbufSync',
+      }
+    end,
   },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -529,7 +541,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer 
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
 vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>', { desc = 'Terminal' })
 -- vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', ':NvimTreeToggle<CR>', { desc = 'Explorer' })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Dirbuf<CR>', { desc = 'Explorer' })
 vim.keymap.set({ 'n', 'v' }, 'Q', ':bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set(
   { 'n', 'v' },
@@ -758,7 +770,7 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
-require('nvim-tree').setup()
+-- require('nvim-tree').setup()
 
 cmp.setup {
   snippet = {
