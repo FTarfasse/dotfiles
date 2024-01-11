@@ -1,1 +1,8 @@
-/home/fabrice/.bash_aliases
+alias ll='ls -rlt'
+alias lg='lazygit'
+alias gst='git status'
+alias v='nvim'
+alias cat='batcat'
+alias f='nvim $(fzf)'
+alias npm='pnpm'
+alias out='git checkout .'
