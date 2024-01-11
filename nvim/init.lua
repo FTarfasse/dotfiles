@@ -511,6 +511,7 @@ vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>bl', require('telescope.builtin').buffers, { desc = '[B]uffer [L]ist' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bn', '<CMD>bnext<CR>', { desc = '[B]uffer [N]ext' })
 vim.keymap.set({ 'n', 'v' }, '<leader>bp', '<CMD>bprev<CR>', { desc = '[B]uffer [P]revious' })
+vim.keymap.set({ 'n', 'v' }, '<leader>bf', '<C-w>o', { desc = '[B]uffer [F]ullscreen' })
 vim.keymap.set({ 'n', 'v' }, '<C-t>', '<CMD>ToggleTerm direction=horizontal size=20 dir=getcwd()<CR>', { desc = 'Terminal' })
 -- vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Explore<CR>', { desc = 'Explorer' })
 vim.keymap.set({ 'n', 'v' }, '<leader>p', ':Dirbuf<CR>', { desc = 'Explorer' })
@@ -674,7 +675,9 @@ require('symbols-outline').setup()
 local servers = {
   -- clangd = {},
   gopls = {},
-  ocamllsp = {},
+  ocamllsp = {
+    filetypes = { 'ml', 'mli' },
+  },
   -- pyright = {},
   rust_analyzer = {
     ['rust-analyzer'] = {
@@ -804,9 +807,9 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
+-- ray-x/go.nvim
 -- harpoon
 -- neotest
--- Eandrju/cellular-automaton.nvim
 -- overseer
 -- refactoring
 -- dap

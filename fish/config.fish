@@ -7,6 +7,7 @@ direnv hook fish | source
 zoxide init fish | source
 
 set -x PATH ~/.config/emacs/bin $PATH
+set -x XDG_CONFIG_HOME ~/.config
 
 # opam configuration
 source /home/fabrice/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
